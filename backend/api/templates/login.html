@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="">
+        <div class="register-wrapper">
+            <form class="register-form small" method="POST" action="">
+                {% csrf_token %}
+                <div class="content-wrapper">
+                    <h2>Login</h2>
+                    <div class="content-fields">
+                            <div class="form-fields">
+                                <div class="form-field">
+                                    <span>Username</span>
+                                    <input type="text" name="username">
+                                </div>
+                                <div class="form-field">
+                                    <span>Password</span>
+                                    <input type="password" name="password">
+                                </div>
+                            </div>
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+
+                    <div>
+                </div>
+
+                
+                <button class="submit-btn" type="submit">Login</button>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}

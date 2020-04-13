@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="">
+        <!-- <h1 style="text-align: center;">Dashboard</h1> -->
+
+        <div class="dashboard-wrapper">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="avatar-wrapper">
+                        <div class="avatar">
+                            <img src="{% static 'schedule/avatar.png' %}">
+                        </div>
+                    </div>
+                    <h5>Patrick Nymark</h5>
+                </div>
+                <div class="sidebar-body">
+                    <ul>
+                        <li>Profile</li>
+                        <li>Task History</li>
+                        <li>Subscription</li>
+                    
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <h5 style="text-align: center; margin: 20px">Overview</h5>
+
+                <div class="overview-wrapper">
+                    <div class="overview-item">
+                        <div class="overview-header">
+                            <h2>Today</h2>
+                        </div>
+                        <div class="overview-border"></div>
+        
+                    </div>
+                    <div class="overview-item">
+                        <div class="overview-header">
+                            <h2>This Week</h2>
+                        </div>
+                        <div class="overview-border"></div>
+        
+                    </div>
+                    <div class="overview-item">
+                        <div class="overview-header">
+                            <h2>This Month</h2>
+                        </div>
+                        <div class="overview-border"></div>
+        
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

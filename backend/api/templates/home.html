@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="wrapper">
+        <h1>Schedule Home</h1>
+        {% for task in tasks %}
+            <h1>{{ task.title }}</h1>
+        {% empty %}
+            <p>No tasks</p>
+        {% endfor %}
+    </div>
+{% endblock %}

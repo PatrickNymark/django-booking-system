@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="">
+        <div class="register-wrapper">
+            <form class="register-form" method="POST" action="">
+                {% csrf_token %}
+                <div class="content-wrapper">
+                    <h2>Register Account</h2>
+                    <div class="content-fields">
+                        {% for field in form %}
+                            <div class="form-fields">
+                                <span class="form-field-label">{{ field.label }}</span>
+                                <span class="form-field">{{ field }}</span>
+                            </div>
+                        {% endfor %}
+                        {{ form.errors }}
+
+                    <div>
+                </div>
+
+                
+                <button class="submit-btn" type="submit">Register</button>
+            </form>
+        </div>
+        <div>
+        </div>
+    </div>
+{% endblock %}

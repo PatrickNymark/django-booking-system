@@ -1,0 +1,15 @@
+{
+    "extends": ["airbnb"],
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/no-unused-state": "warn"
+    },
+    "env": {
+        "browser": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    }
+}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'schedule/static_compiled/js/schedule.js' %}"></script>
+{% endblock%}
+{% block content %}
+    <div class="tasks-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="header"><h5>FILTERS</h5></div>
+            </div>
+            <div class="sidebar-body {% if not request.user.is_authenticated %} not-logged-in {% endif %}">
+                <form id="filter-form" method="POST" action="{% url 'schedule-tasks'%}">
+                    {% csrf_token %}
+                    <div class="sidebar-clear">
+                        <p id="sidebar-clear">Clear filters</p>
+                    </div>
+                    <ul>
+                        <li>
+                            <p>Price / HR</p>
+                            <input id="price-range" name="price_range" type="text"  />
+                            <div id="slider-range"></div>
+                            <input id="hidden-max-price" type="number" name="max-price" value={{ price_range.0.total_price__max}} hidden readonly/>
+                            <input id="hidden-min-price" type="number" name="min-price" value={{ price_range.1.total_price__min}} hidden readonly />
+                            <input id="hidden-current-max-price" type="number" name="current_max-price" value={{ current_price_range.0.total_price__max}} hidden readonly/>
+                            <input id="hidden-current-min-price" type="number" name="current_min-price" value={{ current_price_range.1.total_price__min}} hidden readonly/>
+
+                        </li>
+                        <li>
+                            <p>Area</p>
+                            <input id="area-input" type="text" placeholder="Enter address, city or country">
+                        </li>
+                        <li>
+                            <p>Category</p>
+                            {% for category in current_categories %}
+                                <input id="hidden-{{category}}" type="text" name="current-category" value={{ category }} hidden/>
+                            {% endfor %}
+                            <ul class="number-completed">
+                                <li>
+                                    <p>
+                                        <label>
+                                        <input id="painting" name="painting" class="category-checkbox" type="checkbox" />
+                                        <span>Painting</span>
+                                        </label>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <label>
+                                        <input id="plumbing" name="plumbing" class="category-checkbox" type="checkbox" />
+                                        <span>Plumbing</span>
+                                        </label>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <label>
+                                        <input id="carpentry" name="carpentry" class="category-checkbox" type="checkbox" />
+                                        <span>Carpentry</span>
+                                        </label>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <label>
+                                        <input id="cleaning" name="cleaning" class="category-checkbox" type="checkbox" />
+                                        <span>Cleaning</span>
+                                        </label>
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input id="hidden-is-urgent" type="checkbox" name="current_is_urgent" value={{ current_is_urgent }} hidden/>
+                            <p style="padding-top: 30px;">
+                                <label>
+                                    <input id="is-urgent" name="is_urgent" class="category-checkbox" type="checkbox" />
+                                    <span>Is Urgent</span>
+                                </label>
+                            </p>
+                        </li>
+                    </ul>
+                    <button type="submit" class="sidebar-submit">Filter</button>
+                </form>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-header">
+                <div class="overlay"></div>
+                <div class="header">
+                    <h1>Django Tasks</h1>
+                </div>
+                <div class="search-wrapper">
+                    <!-- <form  action="{% url 'schedule-tasks' %}" method="GET">
+                        <input name="search-value" value="{{ search_value }}" id="search-tasks" type="text" placeholder="Search for tasks...">
+                    </form> -->
+                    <form id="search-form" method="POST" action="{% url 'schedule-tasks' %}"> 
+                        {% csrf_token %}
+                        {% for field in search_form %}
+                            <img id="search-icon" class="icon" src="{% static 'schedule/search-icon.png'%}">
+                            {{ field }}
+                        {% endfor %} 
+                    </form>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="total-tasks">
+                    <p>Results {{ total_tasks }}</p>
+                </div>
+                <div class="wrapper">
+                    {% if request.user.is_authenticated %}
+                        <div class="task-container">
+                            <div class="task-content">
+                                {% for task in tasks %}
+                                    <div class="task-body">
+                                        <div class="logo">
+                                            <div class="logo-wrapper">
+                                                <img src="{% static 'schedule/keanuu.jpg' %}">
+                                            </div>
+                                            <div class="logo-body">
+                                                <div class="online-circle"></div>
+                                                {% if request.user.customer.is_online %}
+                                                    Online 
+                                                {% else %}
+                                                    Offline
+                                                {% endif %}
+                                                <div class="task-category">
+                                                    <p>{{ task.category }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="task-content-header">
+                                                <div class="task-content-name">
+                                                    <div class="content-wrapper">
+                                                        <h5>{{ task.customer.user.first_name }} {{ task.customer.user.first_name }}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="task-content-estimate">
+                                                    <div class="content-wrapper">
+                                                        <p>
+                                                            <span class="estimate">Estimate: </span>
+                                                            <span class="hours">{{ task.expected_hours }}</span> HOURS 
+                                                            <span class="total">{{ task.total_price }} </span> DKK TOTAL
+                                                        </p> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="description-wrapper">
+                                                <h2>{{ task.title }}</h2>
+                                                <p class=""><span class="materials">Materials:</span> {% if task.have_materials %}Yes{% else %}No{% endif%}</p>
+                                                <p>{{ task.description|linebreaks }}</p> 
+                                            </div>
+                                        </div>
+                                        <div class="buttons">
+                                            <div class="price-wrapper">
+                                                <p class="price"><span>DKK {{ task.hour_price }}</span> / HR</p>
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a href="{% url 'schedule-tasks' %}" class="button">Profile</a>
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a href="/chat/{{task.id}}" class="button">Chat</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="task-sidebar">
+                                <div class="task-sidebar-header">
+                                    <div class="header">
+                                        <h5>How does it work?</h5>
+                                    </div>
+                                </div>
+                                <div class="task-sidebar-body">
+                                    <div class="header">
+                                        <h5>Urgent Tasks<h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    {% else %}
+                        <div class="not-authenticated">
+                            <h5>You have to logged in to see tasks.</h5>
+                            <a href="{% url 'schedule-login' %}" class="login-button">Login</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

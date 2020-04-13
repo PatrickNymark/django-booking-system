@@ -1,0 +1,14 @@
+{
+  "name": "static_src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile:css": "node-sass --watch ./static_src/scss -o ./static_compiled/css"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-sass": "^4.13.1"
+  }
+}

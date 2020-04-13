@@ -1,0 +1,63 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script src="{% static 'schedule/static_compiled/js/schedule.js' %}"></script>
+            
+    <link rel="stylesheet" type="text/css" href="{% static 'schedule/static_compiled/css/schedule.css' %}"></script>
+    {% if title %}
+        <title>Django Schedule - {{ title }}</title>
+    {% else %}
+        <title>Django Schedule</title>
+    {% endif %}
+</head>
+<body>
+    <div class="nav-wrapper">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <h1><a href="/">Django</a></h1>
+            </div>
+            <div class="nav-menu">
+                <ul class="menu-items">
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'schedule-dashboard' %}">Welcome, {{request.user}}</a></li>
+                        <li><a href="{% url 'schedule-logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'schedule-login' %}">Login</a></li>
+                        <li><a href="{% url 'schedule-register' %}">Register</a></li>
+                    {% endif %}
+                    <li><a class="menu-btn border" href="{% url 'schedule-tasks' %}">Find Tasks</a></li>
+                    <li><a class="menu-btn" href="{% url 'schedule-planner' %}">Create Task</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <img class="notification-icon" src="{% static 'schedule/notification-icon.png' %}">
+                        </li>
+                    {% endif %}
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+    <div class="footer-wrapper">
+        <div class="content">
+            <div class="text">
+                <p>Made by Patrick Nymark</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
