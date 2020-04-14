@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "NODE_ENV=development webpack --watch",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "build:dev": "NODE_ENV=development webpack --watch",
+    "watch": "NODE_ENV=development node server.js",
+    "start": "node server.js",
+    "run": "webpack --watch"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +30,7 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.42.1"
   },
+  "proxy": "http://localhost:8000",
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
@@ -35,6 +39,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
+    "html-webpack-plugin": "^4.2.0",
     "mini-css-extract-plugin": "^0.9.0",
     "webpack-bundle-tracker": "^0.4.3",
     "webpack-cli": "^3.3.11",

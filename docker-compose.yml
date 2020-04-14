@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+    backend:
+        container_name: tb_backend
+        build: ./backend
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+        - 8000:8000
+        volumes:
+            - ./backend:/app
+    frontend:
+        container_name: tb_frontend
+        build: ./frontend
+        command: npm run watch
+        ports:
+            - 3000:3000
+        volumes:
+            - ./frontend:/app
+    nginx:
+        container_name: tb_nginx
+        build: ./nginx
+        ports:
+            - 80:80
+        depends_on:
+            - frontend
+            - backend
+        volumes:
+            - ./frontend:/app/frontend
+            - ./backend:/app/backend

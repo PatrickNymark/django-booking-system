@@ -3,18 +3,20 @@ var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const isDevelopment = process.env.NODE_ENV=== 'development';
 
-
+console.log(isDevelopment)
 module.exports = {
     context: __dirname,
     mode: 'development',
     entry: './app/index.js',
     devtool: 'source-map',
     output: {
-        path: path.resolve('./public/bundles/js'),
-        filename: '[name].[hash].js'
+        filename: 'js/[name].[hash].js',
+        path: path.resolve('public'),
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -66,10 +68,13 @@ module.exports = {
         new BundleTracker({
             filename: 'webpack-stats.json'
         }),
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: isDevelopment ? '../css/[name].css' : '../css/[name].[hash].css',
-            chunkFilename: isDevelopment ? '../css/[id].css' : '../css/[id].[hash].css'
+            filename: 'css/[name]-[hash].css',
+            chunkFilename: 'css/[id]-[hash].css'
+        }),
+        new HtmlWebpackPlugin({
+            template: 'public/index.html'
         })
     ],
     resolve: {
