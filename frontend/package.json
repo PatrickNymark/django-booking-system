@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=development webpack",
-    "watch": "NODE_ENV=development webpack --watch",
-    "start:prod": "npm run build && NODE_ENV=production node server.js",
+    "build:dev": "NODE_ENV=development webpack",
+    "build:prod": "NODE_ENV=production webpack",
+    "start:prod": "npm run build:prod && NODE_ENV=production node server.js",
     "start:dev": "NODE_ENV=development node server.js"
   },
   "keywords": [],
