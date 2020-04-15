@@ -7,15 +7,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const isDevelopment = process.env.NODE_ENV=== 'development';
 
-console.log(isDevelopment)
 module.exports = {
     context: __dirname,
-    mode: 'development',
     entry: './app/index.js',
     devtool: 'source-map',
     output: {
         filename: 'js/[name].[hash].js',
-        path: path.resolve('public'),
+        path: path.join(__dirname, '/build/'),
         publicPath: '/'
     },
     module: {
@@ -65,17 +63,18 @@ module.exports = {
         ]
     },
     plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Django React',
+            template: './public/index.html'
+        }),
         new BundleTracker({
             filename: 'webpack-stats.json'
         }),
-        // new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: 'css/[name]-[hash].css',
             chunkFilename: 'css/[id]-[hash].css'
         }),
-        new HtmlWebpackPlugin({
-            template: 'public/index.html'
-        })
+        new CleanWebpackPlugin(),
     ],
     resolve: {
         extensions: ['.js', '.jsx', '.scss']

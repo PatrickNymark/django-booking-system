@@ -12,7 +12,7 @@ services:
     frontend:
         container_name: tb_frontend
         build: ./frontend
-        command: npm run watch
+        command: npm run start
         ports:
             - 3000:3000
         volumes:
