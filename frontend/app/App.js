@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './sass/test.scss';
 
 class App extends Component {
   constructor(props) {
